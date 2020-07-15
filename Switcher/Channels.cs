@@ -2,7 +2,8 @@
 {
     public enum Channels
     {
-        First = 1,
+        None,
+        First,
         Second,
         Third,
         Fourth

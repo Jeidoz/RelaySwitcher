@@ -18,10 +18,10 @@
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <Style x:Key="OffSwitch" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedAccentButton}">
-            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Margin" Value="5" />
         </Style>
         <Style x:Key="OnSwitch" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedDarkButton}">
-            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Margin" Value="5" />
         </Style>
     </Window.Resources>
     <DockPanel>
@@ -46,17 +46,18 @@
             </MenuItem>
             <MenuItem Header="_About">
                 <MenuItem.Icon>
-                    <materialDesign:PackIcon Kind="Information"/>
+                    <materialDesign:PackIcon Kind="Information" />
                 </MenuItem.Icon>
-                <MenuItem Header="A_bout app">
+                <MenuItem Header="A_bout app"
+                          Click="MenuItem_AboutApp_OnClick">
                     <MenuItem.Icon>
-                        <materialDesign:PackIcon Kind="InformationVariant"/>
+                        <materialDesign:PackIcon Kind="InformationVariant" />
                     </MenuItem.Icon>
                 </MenuItem>
                 <MenuItem Header="Third party libraries"
                           Click="MenuItem_ThirdPartyLibs_OnClick">
                     <MenuItem.Icon>
-                        <materialDesign:PackIcon Kind="InformationVariant"/>
+                        <materialDesign:PackIcon Kind="InformationVariant" />
                     </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
@@ -65,6 +66,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition />
+                <RowDefinition Height="10" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
@@ -73,30 +75,40 @@
             <Button
                 Name="Channel1"
                 Style="{StaticResource OffSwitch}"
-                Click="ProcessButtonClick">
+                Click="ProcessButtonClick"
+                Tag="{x:Static local:Channels.First}">
                 Channel #1
             </Button>
             <Button
                 Grid.Row="0" Grid.Column="1"
                 Name="Channel2"
                 Style="{StaticResource OffSwitch}"
-                Click="ProcessButtonClick">
+                Click="ProcessButtonClick"
+                Tag="{x:Static local:Channels.Second}">
                 Channel #2
             </Button>
             <Button
                 Grid.Row="1" Grid.Column="0"
                 Name="Channel3"
                 Style="{StaticResource OffSwitch}"
-                Click="ProcessButtonClick">
+                Click="ProcessButtonClick"
+                Tag="{x:Static local:Channels.Third}">
                 Channel #3
             </Button>
             <Button
                 Grid.Row="1" Grid.Column="1"
                 Name="Channel4"
                 Style="{StaticResource OffSwitch}"
-                Click="ProcessButtonClick">
+                Click="ProcessButtonClick"
+                Tag="{x:Static local:Channels.Fourth}">
                 Channel #4
             </Button>
+            <TextBlock Grid.Row="2" Grid.ColumnSpan="2"
+                       FontSize="7"
+                       FontWeight="SemiBold"
+                       HorizontalAlignment="Center">
+                Each request have 5s timeout. Wait 5s if the app has been frozen.
+            </TextBlock>
         </Grid>
     </DockPanel>
 </Window>

@@ -1,0 +1,42 @@
+﻿<Window x:Class="Switcher.Windows.AboutAppWnd"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:Switcher.Windows"
+        mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        Title="About app"
+        Width="375" Height="180"
+        WindowStartupLocation="CenterOwner">
+    <Grid>
+        <materialDesign:Card Padding="32" Margin="16"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center">
+            <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}"
+                       TextWrapping="Wrap">
+                Developed by <Hyperlink
+                                 NavigateUri="https://t.me/stas_khavruk"
+                                 RequestNavigate="HyperLink_RequestNavigate">
+                    Stanislav Khavruk
+                </Hyperlink> (aka <Hyperlink
+                                                       NavigateUri="https://github.com/Jeidoz"
+                                                       RequestNavigate="HyperLink_RequestNavigate">
+                    Jeidoz
+                </Hyperlink>) for Grigoriy Betsan. This app shares under
+                <Hyperlink
+                    NavigateUri="https://github.com/Jeidoz/RelaySwitcher/blob/master/Switcher/LICENSE.md"
+                    RequestNavigate="HyperLink_RequestNavigate">
+                    MIT License
+                </Hyperlink>
+            </TextBlock>
+        </materialDesign:Card>
+    </Grid>
+</Window>

@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using Switcher.Models;
+using Switcher.ViewModels;
+using Switcher.Windows;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using Newtonsoft.Json;
-using Switcher.Models;
-using Switcher.ViewModels;
-using Switcher.Windows;
 
 namespace Switcher
 {
@@ -17,18 +17,17 @@ namespace Switcher
     public partial class MainWindow
     {
         private readonly MainWindowViewModel _viewModel;
-        
         private readonly string _configFilePath;
-        private ChannelManager _channelManager;
         private readonly Style _activatedButtonStyle;
         private readonly Style _deactivatedButtonStyle;
-        
+
+        private ChannelManager _channelManager;
+
         public MainWindow()
         {
             _configFilePath = Path.Combine(Directory.GetCurrentDirectory(), Config.FileName);
-            _channelManager = new ChannelManager();
             InitializeComponent();
-            
+
             var buttons = new List<Button>
             {
                 Channel1,
@@ -37,9 +36,42 @@ namespace Switcher
                 Channel4
             };
             _viewModel = new MainWindowViewModel(buttons, _configFilePath);
-            this.DataContext = _viewModel;
-            _activatedButtonStyle = this.FindResource("OnSwitch") as Style;
-            _deactivatedButtonStyle = this.FindResource("OffSwitch") as Style;
+            DataContext = _viewModel;
+            _activatedButtonStyle = FindResource("OnSwitch") as Style;
+            _deactivatedButtonStyle = FindResource("OffSwitch") as Style;
+            try
+            {
+                _channelManager = new ChannelManager(_viewModel.AppConfig);
+                SetUpActiveButtons();
+            }
+            catch (IndexOutOfRangeException)
+            {
+                MessageBox.Show(
+                    "Received unknown response. Try to change port in the config.json",
+                    "Unknown response",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                Application.Current.Shutdown();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(
+                    "Can not establish connection to remote host. Try to change ip/port in the config.json.",
+                    "Can not connect to remote host",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                Application.Current.Shutdown();
+            }
+        }
+
+        private void SetUpActiveButtons()
+        {
+            var channelsStatus = _channelManager.GetRelayChannelsStatus();
+            for (int i = 0; i < 4; ++i)
+            {
+                _viewModel.SwitchButtons[i].Style =
+                    channelsStatus[i] ? _activatedButtonStyle : _deactivatedButtonStyle;
+            }
         }
 
         private void ProcessButtonClick(object sender, RoutedEventArgs e)
@@ -50,6 +82,8 @@ namespace Switcher
             }
 
             pressedButton.Style = _activatedButtonStyle;
+            Enum.TryParse(pressedButton.Tag.ToString(), out Channels selectedChannel);
+            _channelManager.SendRelayChannelsSetCommand(selectedChannel);
             foreach (var button in _viewModel.SwitchButtons.Where(btn => btn.Name != pressedButton.Name))
             {
                 button.Style = _deactivatedButtonStyle;
@@ -59,7 +93,13 @@ namespace Switcher
         private void MenuItem_ThirdPartyLibs_OnClick(object sender, RoutedEventArgs e)
         {
             var wnd = new ThirdPartyLibrariesWnd();
-            wnd.ShowDialog();
+            wnd.Show();
+        }
+
+        private void MenuItem_AboutApp_OnClick(object sender, RoutedEventArgs e)
+        {
+            var wnd = new AboutAppWnd();
+            wnd.Show();
         }
 
         private void MenuItem_OpenConfigFile_OnClick(object sender, RoutedEventArgs e)
@@ -86,6 +126,28 @@ namespace Switcher
 
             _viewModel.AppConfig = wnd.Config;
             _viewModel.AppConfig.SaveToFile(_configFilePath);
+
+            try
+            {
+                _channelManager = new ChannelManager(_viewModel.AppConfig);
+                SetUpActiveButtons();
+            }
+            catch (IndexOutOfRangeException)
+            {
+                MessageBox.Show(
+                    "Received unknown response. Try to change port in the app config.",
+                    "Unknown response",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(
+                    "Can not establish connection to remote host. Try to change ip/port in the app config.",
+                    "Can not connect to remote host",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
         }
     }
 }

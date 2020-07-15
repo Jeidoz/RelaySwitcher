@@ -1,83 +1,46 @@
-﻿using System;
+﻿using Switcher.Data;
+using Switcher.Models;
+using System.Collections;
+using System.Net;
 using System.Net.Sockets;
-using System.Text;
 
 namespace Switcher
 {
     public sealed class ChannelManager
     {
         public static int DefaultTcpPort = 60001;
-        
-        private const char TurnOn = '1';
-        private const string TurnOffAll = "2X";
-        private TcpClient _tcpClient;
-        private NetworkStream _stream;
-        private string _ip;
-        private int _port;
 
-        public string Ip
+        private readonly UdpClient _client;
+        private readonly Config _config;
+        private readonly RelayCommand _command;
+
+        //Creates an IPEndPoint to record the IP Address and port number of the sender.
+        // The IPEndPoint will allow you to read datagrams sent from any source.
+        private IPEndPoint _remoteIpEndPoint;
+
+        public ChannelManager(Config config)
         {
-            get => _ip;
-            set
-            {
-                Close();
-                _ip = value;
-                Open();
-            }
+            _config = config;
+            _client = new UdpClient(_config.Ip, _config.Port);
+            _client.Client.ReceiveTimeout = 5000;
+            _client.Client.SendTimeout = 5000;
+            _command = new RelayCommand(_config.Password);
+            _remoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
         }
 
-        public int Port
+        public void SendRelayChannelsSetCommand(Channels channel)
         {
-            get => _port;
-            set
-            {
-                Close();
-                _port = value;
-                Open();
-            }
+            byte[] data = _command.GetRelayChannelsSetCommand(channel);
+            _client.Send(data, data.Length);
         }
 
-        public ChannelManager()
+        public BitArray GetRelayChannelsStatus()
         {
-            _ip = "127.0.0.1";
-            _port = DefaultTcpPort;
-        }
-        public ChannelManager(string ip, int port)
-        {
-            _ip = ip;
-            _port = port;
-        }
+            byte[] data = _command.GetRelayChannelsStatusCommand();
+            _client.Send(data, data.Length);
 
-        private string SendMessage(string message)
-        {
-            byte[] data = Encoding.ASCII.GetBytes(message);
-            _stream.Write(data, 0, data.Length);
-
-            data = new byte[256];
-            int bytes = _stream.Read(data, 0, data.Length);
-            return Encoding.ASCII.GetString(data, 0, bytes);
-        }
-
-        public string TurnOnChannel(Channels channel)
-        {
-            return SendMessage($"{TurnOn}{channel:d}");
-        }
-
-        public string TurnOffAllChannels()
-        {
-            return SendMessage(TurnOffAll);
-        }
-
-        public void Open()
-        {
-            _tcpClient.Connect(_ip, _port);
-            _stream = _tcpClient.GetStream();
-        }
-
-        public void Close()
-        {
-            _stream.Close();
-            _tcpClient.Close();
+            byte[] response = _client.Receive(ref _remoteIpEndPoint);
+            return new BitArray(new[] { response[RelayCommand.StatusResultByte] });
         }
     }
 }
