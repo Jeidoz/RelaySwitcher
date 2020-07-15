@@ -47,7 +47,7 @@ namespace Switcher
             catch (IndexOutOfRangeException)
             {
                 MessageBox.Show(
-                    "Received unknown response. Try to change port in the config.json",
+                    "Received unknown response. Try to change port/password in the config.json",
                     "Unknown response",
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
@@ -56,7 +56,7 @@ namespace Switcher
             catch (Exception)
             {
                 MessageBox.Show(
-                    "Can not establish connection to remote host. Try to change ip/port in the config.json.",
+                    "Can not establish connection to remote host. Try to change ip/port/password in the config.json.",
                     "Can not connect to remote host",
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
@@ -135,7 +135,7 @@ namespace Switcher
             catch (IndexOutOfRangeException)
             {
                 MessageBox.Show(
-                    "Received unknown response. Try to change port in the app config.",
+                    "Received unknown response. Try to change port/password in the app config.",
                     "Unknown response",
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
@@ -143,7 +143,7 @@ namespace Switcher
             catch (Exception)
             {
                 MessageBox.Show(
-                    "Can not establish connection to remote host. Try to change ip/port in the app config.",
+                    "Can not establish connection to remote host. Try to change ip/port/password in the app config.",
                     "Can not connect to remote host",
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
