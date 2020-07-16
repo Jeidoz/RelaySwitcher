@@ -21,7 +21,7 @@ namespace Switcher.FakeRelayListener
                     Console.WriteLine("Waiting for broadcast");
                     byte[] bytes = listener.Receive(ref groupEP);
 
-                    Console.WriteLine($"Received broadcast from {groupEP} :");
+                    Console.WriteLine($"Received broadcast from {groupEP} at {DateTime.Now.ToLongTimeString()}:");
                     foreach (var b in bytes)
                     {
                         Console.Write($"{b:X2} ");
