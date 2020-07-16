@@ -1,8 +1,11 @@
 ﻿using Switcher.Data;
 using Switcher.Models;
+using System;
 using System.Collections;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Switcher
 {
@@ -21,17 +24,38 @@ namespace Switcher
         public ChannelManager(Config config)
         {
             _config = config;
-            _client = new UdpClient(_config.Ip, _config.Port);
-            _client.Client.ReceiveTimeout = 5000;
-            _client.Client.SendTimeout = 5000;
+            if (_client is null)
+            {
+                _client = new UdpClient(_config.Ip, _config.Port)
+                {
+                    Client =
+                    {
+                        ReceiveTimeout = 5000,
+                        SendTimeout = 5000
+                    }
+                };
+            }
+            else
+            {
+                _client.Connect(_config.Ip, _config.Port);
+            }
+
             _command = new RelayCommand(_config.Password);
             _remoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
         }
 
-        public void SendRelayChannelsSetCommand(Channels channel)
+        public Task SendRelayChannelsSetCommand(Channels channel)
         {
-            byte[] data = _command.GetRelayChannelsSetCommand(channel);
-            _client.Send(data, data.Length);
+            return Task.Run(() =>
+            {
+                byte[] data = _command.GetRelayChannelsSetCommand(Channels.None);
+                _client.Send(data, data.Length);
+
+                Thread.Sleep(TimeSpan.FromSeconds(_config.PauseBetweenRequests));
+
+                data = _command.GetRelayChannelsSetCommand(channel);
+                _client.Send(data, data.Length);
+            });
         }
 
         public BitArray GetRelayChannelsStatus()

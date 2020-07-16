@@ -74,7 +74,7 @@ namespace Switcher
             }
         }
 
-        private void ProcessButtonClick(object sender, RoutedEventArgs e)
+        private async void ProcessButtonClick(object sender, RoutedEventArgs e)
         {
             if (!(sender is Button pressedButton))
             {
@@ -83,7 +83,7 @@ namespace Switcher
 
             pressedButton.Style = _activatedButtonStyle;
             Enum.TryParse(pressedButton.Tag.ToString(), out Channels selectedChannel);
-            _channelManager.SendRelayChannelsSetCommand(selectedChannel);
+            await _channelManager.SendRelayChannelsSetCommand(selectedChannel);
             foreach (var button in _viewModel.SwitchButtons.Where(btn => btn.Name != pressedButton.Name))
             {
                 button.Style = _deactivatedButtonStyle;

@@ -1,18 +1,19 @@
-﻿using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Switcher.ViewModels;
+using System.IO;
 
 namespace Switcher.Models
 {
     public sealed class Config : BaseViewModel
     {
         public static readonly string FileName = "config.json";
-        
+
+        private const float DefaultPauseInSeconds = 2;
+
         private string _ip;
         private int _port;
         private int _password;
+        private float _pauseBetweenRequests;
 
         public string Ip
         {
@@ -42,11 +43,22 @@ namespace Switcher.Models
             }
         }
 
+        public float PauseBetweenRequests
+        {
+            get => _pauseBetweenRequests;
+            set
+            {
+                _pauseBetweenRequests = value;
+                OnPropertyChanged(nameof(PauseBetweenRequests));
+            }
+        }
+
         public static readonly Config Default = new Config
         {
             _ip = "0.0.0.0",
             _port = ChannelManager.DefaultTcpPort,
-            _password = 0
+            _password = 0,
+            _pauseBetweenRequests = DefaultPauseInSeconds
         };
 
         public static Config LoadFromFile(string path)
@@ -60,7 +72,5 @@ namespace Switcher.Models
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
             File.WriteAllText(path, json);
         }
-        
-        
     }
 }

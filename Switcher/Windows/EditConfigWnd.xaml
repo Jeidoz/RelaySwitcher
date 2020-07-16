@@ -14,7 +14,8 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         Title="Config edit"
-        Width="420" Height="285"
+        Width="450" Height="300"
+        MinWidth="450" MinHeight="300"
         WindowStartupLocation="CenterOwner">
     <Window.Resources>
         <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
@@ -28,15 +29,15 @@
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
+                    <RowDefinition/>
                     <RowDefinition Height="42"/>
                 </Grid.RowDefinitions>
-                
-                <TextBox
-                    Name="TxtIp"
-                    Grid.Row="0"
-                    Margin="5"
-                    materialDesign:HintAssist.Hint="IP Address (i.e. 127.0.0.1)"
-                    materialDesign:HintAssist.HelperText="IP Address">
+
+                <TextBox Grid.Row="0"
+                         Name="TxtIp"
+                         Margin="5"
+                         materialDesign:HintAssist.Hint="IP Address (i.e. 127.0.0.1)"
+                         materialDesign:HintAssist.HelperText="IP Address">
                     <Binding Path="Ip"
                              UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
@@ -44,12 +45,11 @@
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox>
-                <TextBox
-                    Name="TxtPort"
-                    Grid.Row="1"
-                    Margin="5"
-                    materialDesign:HintAssist.Hint="Port (i.e. 60001)"
-                    materialDesign:HintAssist.HelperText="Port">
+                <TextBox Grid.Row="1"
+                         Name="TxtPort"
+                         Margin="5"
+                         materialDesign:HintAssist.Hint="Port (i.e. 60001)"
+                         materialDesign:HintAssist.HelperText="Port">
                     <Binding Path="Port"
                              UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
@@ -57,12 +57,11 @@
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox>
-                <TextBox
-                    Name="TxtPassword"
-                    Grid.Row="2"
-                    Margin="5"
-                    materialDesign:HintAssist.Hint="Password (i.e. 1234)"
-                    materialDesign:HintAssist.HelperText="Password (0 for none)">
+                <TextBox Grid.Row="2"
+                         Name="TxtPassword"
+                         Margin="5"
+                         materialDesign:HintAssist.Hint="Password (i.e. 1234)"
+                         materialDesign:HintAssist.HelperText="Password (0 for none)">
                     <Binding Path="Password"
                              UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
@@ -70,8 +69,28 @@
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox>
+                <StackPanel Grid.Row="3"
+                            Orientation="Horizontal"
+                            Margin="5">
+                    <TextBlock Text="Pause between requests (seconds)"
+                               VerticalAlignment="Center"/>
+                    <Slider Minimum="0.1"
+                            Maximum="5"
+                            TickFrequency="0.1"
+                            IsSnapToTickEnabled="True"
+                            ToolTip="Pause between requests (in seconds)"
+                            Value="{Binding PauseBetweenRequests}"
+                            Width="120"
+                            VerticalAlignment="Center"
+                            Margin="10, 0"/>
+                    <TextBox x:Name="SliderRequestsPause"
+                             Text="{Binding PauseBetweenRequests}"
+                             VerticalAlignment="Center"
+                             ToolTip="Current pause value (in seconds)"
+                             Width="45"/>
+                </StackPanel>
                 <Button Content="Save"
-                        Grid.Row="3"
+                        Grid.Row="4"
                         Margin="5"
                         Click="SaveConfig_Click">
                     <Button.Style>
