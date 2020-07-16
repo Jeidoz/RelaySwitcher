@@ -26,11 +26,7 @@
                                  NavigateUri="https://t.me/stas_khavruk"
                                  RequestNavigate="HyperLink_RequestNavigate">
                     Stanislav Khavruk
-                </Hyperlink> (aka <Hyperlink
-                                                       NavigateUri="https://github.com/Jeidoz"
-                                                       RequestNavigate="HyperLink_RequestNavigate">
-                    Jeidoz
-                </Hyperlink>) for Grigoriy Betsan. This app shares under
+                </Hyperlink> for US0KW (Alex Betsan). This app shares under
                 <Hyperlink
                     NavigateUri="https://github.com/Jeidoz/RelaySwitcher/blob/master/Switcher/LICENSE.md"
                     RequestNavigate="HyperLink_RequestNavigate">
