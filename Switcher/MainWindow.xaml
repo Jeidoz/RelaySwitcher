@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Switcher"
+        xmlns:models="clr-namespace:Switcher.Models"
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -15,7 +16,8 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         Title="Switcher"
         Height="200" Width="320"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Topmost="True">
     <Window.Resources>
         <Style x:Key="OffSwitch" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedAccentButton}">
             <Setter Property="Margin" Value="5" />
@@ -24,6 +26,11 @@
             <Setter Property="Margin" Value="5" />
         </Style>
     </Window.Resources>
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static local:MainWindow.EditRelayLabelCommand}"
+                        Executed="ExecutedEditRelayButtonLabel"
+                        CanExecute="CanExecuteEditRelayButtonLabel" />
+    </Window.CommandBindings>
     <DockPanel>
         <Menu DockPanel.Dock="Top"
               IsMainMenu="True">
@@ -76,32 +83,40 @@
                 Name="Channel1"
                 Style="{StaticResource OffSwitch}"
                 Click="ProcessButtonClick"
-                Tag="{x:Static local:Channels.First}">
-                Relay #1
+                Tag="{x:Static local:Channels.First}"
+                Content="{Binding AppConfig.RelayLabels[0].Label}">
+                <Button.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Edit label"
+                                  Command="{x:Static local:MainWindow.EditRelayLabelCommand}"
+                                  CommandParameter="{Binding AppConfig.RelayLabels[0].RelayChannel}"
+                                  CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+                    </ContextMenu>
+                </Button.ContextMenu>
             </Button>
             <Button
                 Grid.Row="0" Grid.Column="1"
                 Name="Channel2"
                 Style="{StaticResource OffSwitch}"
                 Click="ProcessButtonClick"
-                Tag="{x:Static local:Channels.Second}">
-                Relay #2
+                Tag="{x:Static local:Channels.Second}"
+                Content="{Binding AppConfig.RelayLabels[1].Label}">
             </Button>
             <Button
                 Grid.Row="1" Grid.Column="0"
                 Name="Channel3"
                 Style="{StaticResource OffSwitch}"
                 Click="ProcessButtonClick"
-                Tag="{x:Static local:Channels.Third}">
-                Relay #3
+                Tag="{x:Static local:Channels.Third}"
+                Content="{Binding AppConfig.RelayLabels[2].Label}">
             </Button>
             <Button
                 Grid.Row="1" Grid.Column="1"
                 Name="Channel4"
                 Style="{StaticResource OffSwitch}"
                 Click="ProcessButtonClick"
-                Tag="{x:Static local:Channels.Fourth}">
-                Relay #4
+                Tag="{x:Static local:Channels.Fourth}"
+                Content="{Binding AppConfig.RelayLabels[3].Label}">
             </Button>
             <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
                        FontSize="7"

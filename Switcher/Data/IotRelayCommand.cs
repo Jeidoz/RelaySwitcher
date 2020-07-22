@@ -2,7 +2,7 @@
 
 namespace Switcher.Data
 {
-    public sealed class RelayCommand
+    public sealed class IotRelayCommand
     {
         public const byte StatusResultByte = 4;
         public const byte SetRelay = 0xFF;
@@ -44,7 +44,7 @@ namespace Switcher.Data
             }
         }
 
-        public RelayCommand(int password = NoPassword)
+        public IotRelayCommand(int password = NoPassword)
         {
             Session = default;
             Password = (ushort)password;

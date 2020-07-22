@@ -73,8 +73,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Data\RelayCommand.cs" />
+    <Compile Include="Data\IotRelayCommand.cs" />
     <Compile Include="Models\Config.cs" />
+    <Compile Include="Models\RelayLabel.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ValidationRules\IpValidation.cs" />
     <Compile Include="ValidationRules\PasswordValidation.cs" />
@@ -86,6 +87,9 @@
     </Compile>
     <Compile Include="Windows\EditConfigWnd.xaml.cs">
       <DependentUpon>EditConfigWnd.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\EditRelayLabelWnd.xaml.cs">
+      <DependentUpon>EditRelayLabelWnd.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\ThirdPartyLibrariesWnd.xaml.cs">
       <DependentUpon>ThirdPartyLibrariesWnd.xaml</DependentUpon>
@@ -106,6 +110,10 @@
     </Compile>
     <Page Include="Windows\AboutAppWnd.xaml" />
     <Page Include="Windows\EditConfigWnd.xaml" />
+    <Page Include="Windows\EditRelayLabelWnd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\ThirdPartyLibrariesWnd.xaml" />
   </ItemGroup>
   <ItemGroup>

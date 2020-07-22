@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace Switcher
 {
@@ -22,6 +23,9 @@ namespace Switcher
         private readonly Style _deactivatedButtonStyle;
 
         private ChannelManager _channelManager;
+
+        public static ICommand EditRelayLabelCommand = new RoutedCommand();
+
 
         public MainWindow()
         {
@@ -148,6 +152,24 @@ namespace Switcher
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
             }
+        }
+
+        private void ExecutedEditRelayButtonLabel(object sender, ExecutedRoutedEventArgs e)
+        {
+            var labels = _viewModel.AppConfig.RelayLabels;
+            Enum.TryParse(((Button)e.Source).Tag.ToString(), out Channels selectedChannel);
+            var oldLabel = labels.First(relay => relay.RelayChannel == selectedChannel);
+            var wnd = new EditRelayLabelWnd(oldLabel);
+            if (wnd.ShowDialog() == true)
+            {
+                _viewModel.AppConfig.RelayLabels[labels.IndexOf(oldLabel)].Label = wnd.NewLabel;
+                _viewModel.AppConfig.SaveToFile(_configFilePath);
+            }
+        }
+
+        private void CanExecuteEditRelayButtonLabel(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = e.Source is Button;
         }
     }
 }

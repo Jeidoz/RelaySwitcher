@@ -19,7 +19,7 @@
         WindowStartupLocation="CenterOwner">
     <Window.Resources>
         <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
-            <Setter Property="MaxHeight" Value="22"/>
+            <Setter Property="MaxHeight" Value="27"/>
         </Style>
     </Window.Resources>
     <Grid>
@@ -35,7 +35,7 @@
 
                 <TextBox Grid.Row="0"
                          Name="TxtIp"
-                         Margin="5"
+                         Margin="5" Padding="0"
                          materialDesign:HintAssist.Hint="IP Address (i.e. 127.0.0.1)"
                          materialDesign:HintAssist.HelperText="IP Address">
                     <Binding Path="Ip"
@@ -47,7 +47,7 @@
                 </TextBox>
                 <TextBox Grid.Row="1"
                          Name="TxtPort"
-                         Margin="5"
+                         Margin="5" Padding="0"
                          materialDesign:HintAssist.Hint="Port (i.e. 60001)"
                          materialDesign:HintAssist.HelperText="Port">
                     <Binding Path="Port"
@@ -59,7 +59,7 @@
                 </TextBox>
                 <TextBox Grid.Row="2"
                          Name="TxtPassword"
-                         Margin="5"
+                         Margin="5" Padding="0"
                          materialDesign:HintAssist.Hint="Password (i.e. 1234)"
                          materialDesign:HintAssist.HelperText="Password (0 for none)">
                     <Binding Path="Password"
@@ -91,7 +91,7 @@
                 </StackPanel>
                 <Button Content="Save"
                         Grid.Row="4"
-                        Margin="5"
+                        Margin="5" Padding="0"
                         Click="SaveConfig_Click">
                     <Button.Style>
                         <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">

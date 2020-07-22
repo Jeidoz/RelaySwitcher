@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Switcher.ViewModels;
+using System.Collections.ObjectModel;
 using System.IO;
 
 namespace Switcher.Models
@@ -14,6 +15,7 @@ namespace Switcher.Models
         private int _port;
         private int _password;
         private float _pauseBetweenRequests;
+        private readonly ObservableCollection<RelayLabel> _relayLabels;
 
         public string Ip
         {
@@ -42,7 +44,6 @@ namespace Switcher.Models
                 OnPropertyChanged(nameof(Password));
             }
         }
-
         public float PauseBetweenRequests
         {
             get => _pauseBetweenRequests;
@@ -52,6 +53,8 @@ namespace Switcher.Models
                 OnPropertyChanged(nameof(PauseBetweenRequests));
             }
         }
+
+        public ObservableCollection<RelayLabel> RelayLabels { get; set; }
 
         public static readonly Config Default = new Config
         {

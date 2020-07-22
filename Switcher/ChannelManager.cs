@@ -15,7 +15,7 @@ namespace Switcher
 
         private readonly UdpClient _client;
         private readonly Config _config;
-        private readonly RelayCommand _command;
+        private readonly IotRelayCommand _command;
 
         //Creates an IPEndPoint to record the IP Address and port number of the sender.
         // The IPEndPoint will allow you to read datagrams sent from any source.
@@ -40,7 +40,7 @@ namespace Switcher
                 _client.Connect(_config.Ip, _config.Port);
             }
 
-            _command = new RelayCommand(_config.Password);
+            _command = new IotRelayCommand(_config.Password);
             _remoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
         }
 
@@ -64,7 +64,7 @@ namespace Switcher
             _client.Send(data, data.Length);
 
             byte[] response = _client.Receive(ref _remoteIpEndPoint);
-            return new BitArray(new[] { response[RelayCommand.StatusResultByte] });
+            return new BitArray(new[] { response[IotRelayCommand.StatusResultByte] });
         }
     }
 }
