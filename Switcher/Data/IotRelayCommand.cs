@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Switcher.Data.Enums;
+using System;
 
 namespace Switcher.Data
 {
@@ -54,11 +55,15 @@ namespace Switcher.Data
         {
             byte selectedChannel = channel switch
             {
-                Channels.None => 0b0000,
-                Channels.First => 0b0001,
-                Channels.Second => 0b0010,
-                Channels.Third => 0b0100,
-                Channels.Fourth => 0b1000,
+                Channels.None => 0b_0000_0000,
+                Channels.First => 0b_0000_0001,
+                Channels.Second => 0b_0000_0010,
+                Channels.Third => 0b_0000_0100,
+                Channels.Fourth => 0b_0000_1000,
+                Channels.Fifth => 0b_0001_0000,
+                Channels.Sixth => 0b_0010_0000,
+                Channels.Seventh => 0b_0100_0000,
+                Channels.Eighth => 0b_1000_0000,
                 _ => throw new ArgumentOutOfRangeException(nameof(channel), "Out of relay channels (range is #1-#4)")
             };
             return new[]

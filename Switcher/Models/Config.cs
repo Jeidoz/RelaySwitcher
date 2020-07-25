@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Switcher.Data.Enums;
 using Switcher.ViewModels;
 using System;
 using System.Collections.ObjectModel;
@@ -17,6 +18,7 @@ namespace Switcher.Models
         private int _password;
         private float _pauseBetweenRequests;
         private bool _isTopMost;
+        private RelayType _relayType;
 
         public string Ip
         {
@@ -63,6 +65,16 @@ namespace Switcher.Models
                 OnPropertyChanged(nameof(IsTopMost));
             }
         }
+
+        public RelayType RelayType
+        {
+            get => _relayType;
+            set
+            {
+                _relayType = value;
+                OnPropertyChanged(nameof(RelayType));
+            }
+        }
         public ObservableCollection<RelayLabel> RelayLabels { get; set; }
 
         public static readonly Config Default = new Config
@@ -72,6 +84,7 @@ namespace Switcher.Models
             _password = 0,
             _pauseBetweenRequests = DefaultPauseInSeconds,
             _isTopMost = false,
+            _relayType = RelayType.FourChannels,
             RelayLabels = new ObservableCollection<RelayLabel>
             {
                 new RelayLabel(Channels.First, "Relay #1"),
@@ -95,6 +108,7 @@ namespace Switcher.Models
             _port = config._port;
             _password = config._password;
             _pauseBetweenRequests = config._pauseBetweenRequests;
+            _relayType = config._relayType;
             IsTopMost = config._isTopMost;
             RelayLabels = new ObservableCollection<RelayLabel>(config.RelayLabels);
         }
@@ -130,7 +144,8 @@ namespace Switcher.Models
             return IsSameSocketConfig(config) &&
                    _password == config._password &&
                    Math.Abs(_pauseBetweenRequests - config._pauseBetweenRequests) < MinDiff &&
-                   _isTopMost == config._isTopMost;
+                   _isTopMost == config._isTopMost &&
+                   _relayType == config._relayType;
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Switcher.Models;
+﻿using Switcher.Data.Enums;
+using Switcher.Models;
+using System;
 using System.Collections.ObjectModel;
 using System.IO;
 
@@ -6,22 +8,55 @@ namespace Switcher.ViewModels
 {
     public sealed class MainWindowViewModel : BaseViewModel
     {
+        private const int MaxRelayChannels = 8;
+
         private Config _appConfig;
+        private ObservableCollection<RelayButton> _switchButtons;
 
         public MainWindowViewModel(string configPath)
         {
             if (!File.Exists(configPath))
             {
-                _appConfig = Config.Default;
-                _appConfig.SaveToFile(configPath);
+                AppConfig = Config.Default;
+                AppConfig.SaveToFile(configPath);
             }
             else
             {
-                _appConfig = Config.LoadFromFile(configPath);
+                AppConfig = Config.LoadFromFile(configPath);
             }
         }
 
-        public ObservableCollection<RelayButton> SwitchButtons { get; set; }
+        private void UpdateEnableSwitchers()
+        {
+            int maxSwitchButtonIndex = _appConfig.RelayType switch
+            {
+                RelayType.FourChannels => 4,
+                RelayType.SixChannels => 6,
+                RelayType.EightChannels => 8,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+            int i = 0;
+            for (; i < maxSwitchButtonIndex; ++i)
+            {
+                SwitchButtons[i].IsEnabled = true;
+            }
+
+            for (; i < MaxRelayChannels; ++i)
+            {
+                SwitchButtons[i].IsEnabled = false;
+            }
+        }
+
+        public ObservableCollection<RelayButton> SwitchButtons
+        {
+            get => _switchButtons;
+            set
+            {
+                _switchButtons = value;
+                UpdateEnableSwitchers();
+                OnPropertyChanged(nameof(SwitchButtons));
+            }
+        }
 
         public Config AppConfig
         {
@@ -29,6 +64,11 @@ namespace Switcher.ViewModels
             set
             {
                 _appConfig = value;
+                if (SwitchButtons != null)
+                {
+                    UpdateEnableSwitchers();
+                }
+
                 OnPropertyChanged(nameof(AppConfig));
             }
         }

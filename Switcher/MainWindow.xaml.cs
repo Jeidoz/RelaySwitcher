@@ -1,4 +1,5 @@
-﻿using Switcher.Models;
+﻿using Switcher.Data.Enums;
+using Switcher.Models;
 using Switcher.ViewModels;
 using Switcher.Windows;
 using System;

@@ -1,4 +1,4 @@
-﻿namespace Switcher
+﻿namespace Switcher.Data.Enums
 {
     public enum Channels : byte
     {

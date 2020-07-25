@@ -1,4 +1,5 @@
-﻿using Switcher.ViewModels;
+﻿using Switcher.Data.Enums;
+using Switcher.ViewModels;
 
 namespace Switcher.Models
 {

@@ -1,4 +1,5 @@
 ﻿using Switcher.Data;
+using Switcher.Data.Enums;
 using Switcher.Models;
 using System;
 using System.Collections;

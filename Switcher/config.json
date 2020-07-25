@@ -4,6 +4,7 @@
   "Password": 0,
   "PauseBetweenRequests": 1.0,
   "IsTopMost": true,
+  "RelayType": 0,
   "RelayLabels": [
     { "RelayChannel": 1, "Label": "Relay #1" },
     { "RelayChannel": 2, "Label": "Relay #2" },

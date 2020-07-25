@@ -88,6 +88,7 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Button Style="{Binding Style}"
+                                IsEnabled="{Binding IsEnabled}"
                                 Click="ProcessButtonClick"
                                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                 Content="{Binding RelayLabel.Label}">

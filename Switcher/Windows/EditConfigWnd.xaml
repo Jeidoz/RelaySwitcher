@@ -6,6 +6,9 @@
         mc:Ignorable="d"
         xmlns:validators="clr-namespace:Switcher.ValidationRules"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:converters="clr-namespace:Switcher.Data.Converters"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:enums="clr-namespace:Switcher.Data.Enums"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
@@ -14,18 +17,27 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         Title="Config edit"
-        Width="480" Height="300"
-        MinWidth="480" MinHeight="300"
+        Width="440" Height="360"
+        MinWidth="440" MinHeight="360"
         WindowStartupLocation="CenterOwner">
     <Window.Resources>
         <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
             <Setter Property="MaxHeight" Value="27"/>
         </Style>
+        <ObjectDataProvider MethodName="GetValues"
+                            ObjectType="{x:Type system:Enum}"
+                            x:Key="RelayTypeValues">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="enums:RelayType" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <converters:EnumDescriptionConverter x:Key="RelayTypesConverter"/>
     </Window.Resources>
     <Grid>
         <materialDesign:Card Padding="15" Margin="10">
             <Grid>
                 <Grid.RowDefinitions>
+                    <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
@@ -96,8 +108,19 @@
                           IsChecked="{Binding IsTopMost}">
                     Show above others windows?
                 </CheckBox>
+                <ComboBox Grid.Row="5"
+                          Margin="5"
+                          materialDesign:HintAssist.Hint="Type of relay"
+                          ItemsSource="{Binding Source={StaticResource RelayTypeValues}}"
+                          SelectedItem="{Binding RelayType}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Converter={StaticResource RelayTypesConverter}}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
                 <Button Content="Save"
-                        Grid.Row="5"
+                        Grid.Row="6"
                         Margin="5" Padding="0"
                         Click="SaveConfig_Click">
                     <Button.Style>
