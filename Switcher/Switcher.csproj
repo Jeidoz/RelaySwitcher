@@ -74,6 +74,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Data\Converters\EnumDescriptionConverter.cs" />
+    <Compile Include="Data\Converters\EnumToValueStringConverter.cs" />
     <Compile Include="Data\Enums\RelayType.cs" />
     <Compile Include="Data\IotRelayCommand.cs" />
     <Compile Include="Models\Config.cs" />

@@ -38,12 +38,12 @@ namespace Switcher.ViewModels
             int i = 0;
             for (; i < maxSwitchButtonIndex; ++i)
             {
-                SwitchButtons[i].IsEnabled = true;
+                SwitchButtons[i].IsVisible = true;
             }
 
             for (; i < MaxRelayChannels; ++i)
             {
-                SwitchButtons[i].IsEnabled = false;
+                SwitchButtons[i].IsVisible = false;
             }
         }
 

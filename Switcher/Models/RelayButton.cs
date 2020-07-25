@@ -6,17 +6,17 @@ namespace Switcher.Models
     public sealed class RelayButton : BaseViewModel
     {
         private Style _style;
-        private bool _isEnabled;
+        private bool _isVisible;
         private RelayLabel _relayLabel;
 
 
-        public bool IsEnabled
+        public bool IsVisible
         {
-            get => _isEnabled;
+            get => _isVisible;
             set
             {
-                _isEnabled = value;
-                OnPropertyChanged(nameof(IsEnabled));
+                _isVisible = value;
+                OnPropertyChanged(nameof(IsVisible));
             }
         }
         public Style Style
