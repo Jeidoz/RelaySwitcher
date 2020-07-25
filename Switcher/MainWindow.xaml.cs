@@ -2,7 +2,7 @@
 using Switcher.ViewModels;
 using Switcher.Windows;
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -30,41 +30,57 @@ namespace Switcher
         public MainWindow()
         {
             _configFilePath = Path.Combine(Directory.GetCurrentDirectory(), Config.FileName);
+            if (!File.Exists(_configFilePath))
+            {
+                MessageBox.Show("Could not find configuration file. In the app folder has been created config.json file with current app configuration",
+                    "Missing requested config file",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation);
+            }
+            _viewModel = new MainWindowViewModel(_configFilePath);
+            DataContext = _viewModel;
             InitializeComponent();
 
-            var buttons = new List<Button>
-            {
-                Channel1,
-                Channel2,
-                Channel3,
-                Channel4
-            };
-            _viewModel = new MainWindowViewModel(buttons, _configFilePath);
-            DataContext = _viewModel;
             _activatedButtonStyle = FindResource("OnSwitch") as Style;
             _deactivatedButtonStyle = FindResource("OffSwitch") as Style;
-            try
+
+            var buttons = new ObservableCollection<RelayButton>();
+            for (int i = 0; i < 8; ++i)
             {
-                _channelManager = new ChannelManager(_viewModel.AppConfig);
-                SetUpActiveButtons();
+                buttons.Add(new RelayButton
+                {
+                    Style = _deactivatedButtonStyle,
+                    RelayLabel = _viewModel.AppConfig.RelayLabels[i]
+                });
             }
-            catch (IndexOutOfRangeException)
+
+            _viewModel.SwitchButtons = buttons;
+            SwitchButtonContainer.ItemsSource = _viewModel.SwitchButtons;
+
             {
-                MessageBox.Show(
-                    "Received unknown response. Try to change port/password in the config.json",
-                    "Unknown response",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
-                Application.Current.Shutdown();
-            }
-            catch (Exception)
-            {
-                MessageBox.Show(
-                    "Can not establish connection to remote host. Try to change ip/port/password in the config.json.",
-                    "Can not connect to remote host",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
-                Application.Current.Shutdown();
+                try
+                {
+                    _channelManager = new ChannelManager(_viewModel.AppConfig);
+                    SetUpActiveButtons();
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    MessageBox.Show(
+                        "Received unknown response. Try to change port/password in the config.json",
+                        "Unknown response",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                    Application.Current.Shutdown();
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show(
+                        "Can not establish connection to remote host. Try to change ip/port/password in the config.json.",
+                        "Can not connect to remote host",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                    Application.Current.Shutdown();
+                }
             }
         }
 
@@ -86,9 +102,10 @@ namespace Switcher
             }
 
             pressedButton.Style = _activatedButtonStyle;
-            Enum.TryParse(pressedButton.Tag.ToString(), out Channels selectedChannel);
+            var context = (RelayButton)pressedButton.DataContext;
+            Channels selectedChannel = context.RelayLabel.RelayChannel;
             await _channelManager.SendRelayChannelsSetCommand(selectedChannel);
-            foreach (var button in _viewModel.SwitchButtons.Where(btn => btn.Name != pressedButton.Name))
+            foreach (var button in _viewModel.SwitchButtons.Where(btn => btn.RelayLabel.RelayChannel != selectedChannel))
             {
                 button.Style = _deactivatedButtonStyle;
             }
@@ -128,48 +145,58 @@ namespace Switcher
                 return;
             }
 
+            if (_viewModel.AppConfig.Equals(wnd.Config))
+            {
+                return;
+            }
+
             _viewModel.AppConfig = wnd.Config;
             _viewModel.AppConfig.SaveToFile(_configFilePath);
-
-            try
+            if (_viewModel.AppConfig.IsSameSocketConfig(wnd.Config))
             {
-                _channelManager = new ChannelManager(_viewModel.AppConfig);
-                SetUpActiveButtons();
+                _channelManager.SetConfigWithSameSocket(wnd.Config);
             }
-            catch (IndexOutOfRangeException)
+            else
             {
-                MessageBox.Show(
-                    "Received unknown response. Try to change port/password in the app config.",
-                    "Unknown response",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
-            }
-            catch (Exception)
-            {
-                MessageBox.Show(
-                    "Can not establish connection to remote host. Try to change ip/port/password in the app config.",
-                    "Can not connect to remote host",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
+                try
+                {
+                    _channelManager = new ChannelManager(_viewModel.AppConfig);
+                    SetUpActiveButtons();
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    MessageBox.Show(
+                        "Received unknown response. Try to change port/password in the app config.",
+                        "Unknown response",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show(
+                        "Can not establish connection to remote host. Try to change ip/port/password in the app config.",
+                        "Can not connect to remote host",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                }
             }
         }
 
         private void ExecutedEditRelayButtonLabel(object sender, ExecutedRoutedEventArgs e)
         {
-            var labels = _viewModel.AppConfig.RelayLabels;
-            Enum.TryParse(((Button)e.Source).Tag.ToString(), out Channels selectedChannel);
-            var oldLabel = labels.First(relay => relay.RelayChannel == selectedChannel);
+            var context = (RelayButton)((Button)e.OriginalSource).DataContext;
+            var oldLabel = context.RelayLabel;
             var wnd = new EditRelayLabelWnd(oldLabel);
             if (wnd.ShowDialog() == true)
             {
-                _viewModel.AppConfig.RelayLabels[labels.IndexOf(oldLabel)].Label = wnd.NewLabel;
+                oldLabel.Label = wnd.NewLabel;
                 _viewModel.AppConfig.SaveToFile(_configFilePath);
             }
         }
 
         private void CanExecuteEditRelayButtonLabel(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = e.Source is Button;
+            e.CanExecute = e.OriginalSource is Button;
         }
     }
 }

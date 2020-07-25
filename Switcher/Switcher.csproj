@@ -75,6 +75,7 @@
     </ApplicationDefinition>
     <Compile Include="Data\IotRelayCommand.cs" />
     <Compile Include="Models\Config.cs" />
+    <Compile Include="Models\RelayButton.cs" />
     <Compile Include="Models\RelayLabel.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ValidationRules\IpValidation.cs" />

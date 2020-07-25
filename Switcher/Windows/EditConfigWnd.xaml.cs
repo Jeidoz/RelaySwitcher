@@ -9,7 +9,7 @@ namespace Switcher.Windows
 
         public EditConfigWnd(Config currentConfig)
         {
-            Config = currentConfig;
+            Config = new Config(currentConfig);
             DataContext = Config;
             InitializeComponent();
         }

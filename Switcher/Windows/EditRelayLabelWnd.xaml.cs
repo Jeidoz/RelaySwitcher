@@ -19,8 +19,9 @@ namespace Switcher.Windows
                 RelayChannel = relayLabelInfo.RelayChannel,
                 Label = relayLabelInfo.Label
             };
-            InitializeComponent();
+            Title = $"Edit relay #{(byte)_viewModel.RelayChannel} label";
             DataContext = _viewModel;
+            InitializeComponent();
         }
 
         private void SaveLabel_OnClick(object sender, RoutedEventArgs e)

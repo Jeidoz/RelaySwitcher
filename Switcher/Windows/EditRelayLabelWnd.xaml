@@ -13,9 +13,8 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d"
-        Title="Edit relay switch button label"
         Height="135" Width="300"
-        MinHeight="135">
+        MinHeight="135" MinWidth="300">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>

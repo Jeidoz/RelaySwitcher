@@ -1,11 +1,15 @@
 ﻿namespace Switcher
 {
-    public enum Channels
+    public enum Channels : byte
     {
         None,
         First,
         Second,
         Third,
-        Fourth
+        Fourth,
+        Fifth,
+        Sixth,
+        Seventh,
+        Eighth
     }
 }

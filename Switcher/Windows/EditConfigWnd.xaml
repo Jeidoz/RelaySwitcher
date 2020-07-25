@@ -14,8 +14,8 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         Title="Config edit"
-        Width="450" Height="300"
-        MinWidth="450" MinHeight="300"
+        Width="480" Height="300"
+        MinWidth="480" MinHeight="300"
         WindowStartupLocation="CenterOwner">
     <Window.Resources>
         <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
@@ -26,6 +26,7 @@
         <materialDesign:Card Padding="15" Margin="10">
             <Grid>
                 <Grid.RowDefinitions>
+                    <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
@@ -89,8 +90,14 @@
                              ToolTip="Current pause value (in seconds)"
                              Width="45"/>
                 </StackPanel>
+                <CheckBox Grid.Row="4"
+                          Margin="5"
+                          Style="{StaticResource MaterialDesignCheckBox}"
+                          IsChecked="{Binding IsTopMost}">
+                    Show above others windows?
+                </CheckBox>
                 <Button Content="Save"
-                        Grid.Row="4"
+                        Grid.Row="5"
                         Margin="5" Padding="0"
                         Click="SaveConfig_Click">
                     <Button.Style>

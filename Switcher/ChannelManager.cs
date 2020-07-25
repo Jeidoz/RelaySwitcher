@@ -14,10 +14,10 @@ namespace Switcher
         public static int DefaultTcpPort = 60001;
 
         private readonly UdpClient _client;
-        private readonly Config _config;
+        private Config _config;
         private readonly IotRelayCommand _command;
 
-        //Creates an IPEndPoint to record the IP Address and port number of the sender.
+        // Creates an IPEndPoint to record the IP Address and port number of the sender.
         // The IPEndPoint will allow you to read datagrams sent from any source.
         private IPEndPoint _remoteIpEndPoint;
 
@@ -42,6 +42,12 @@ namespace Switcher
 
             _command = new IotRelayCommand(_config.Password);
             _remoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
+        }
+
+        public void SetConfigWithSameSocket(Config newConfig)
+        {
+            _config = newConfig;
+            _command.Password = (ushort)_config.Password;
         }
 
         public Task SendRelayChannelsSetCommand(Channels channel)

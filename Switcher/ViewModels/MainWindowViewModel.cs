@@ -1,20 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using Switcher.Models;
+using System.Collections.ObjectModel;
 using System.IO;
-using System.Windows.Controls;
-using Switcher.Models;
 
 namespace Switcher.ViewModels
 {
     public sealed class MainWindowViewModel : BaseViewModel
     {
-        private Button _currentActiveButton;
-        private List<Button> _switchButtons;
         private Config _appConfig;
 
-        public MainWindowViewModel(IEnumerable<Button> switchButtons, string configPath)
+        public MainWindowViewModel(string configPath)
         {
-            _switchButtons = new List<Button>(switchButtons);
-
             if (!File.Exists(configPath))
             {
                 _appConfig = Config.Default;
@@ -26,25 +21,7 @@ namespace Switcher.ViewModels
             }
         }
 
-        public List<Button> SwitchButtons
-        {
-            get => _switchButtons;
-            set
-            {
-                _switchButtons = value;
-                OnPropertyChanged(nameof(SwitchButtons));
-            }
-        }
-
-        public Button CurrentActiveButton
-        {
-            get => _currentActiveButton;
-            set
-            {
-                _currentActiveButton = value;
-                OnPropertyChanged(nameof(CurrentActiveButton));
-            }
-        }
+        public ObservableCollection<RelayButton> SwitchButtons { get; set; }
 
         public Config AppConfig
         {

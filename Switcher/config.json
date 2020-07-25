@@ -1,5 +1,17 @@
 ﻿{
-  "ip": "127.0.0.1",
-  "port": 60001,
-  "password": 1234
+  "Ip": "127.0.0.1",
+  "Port": 60001,
+  "Password": 0,
+  "PauseBetweenRequests": 1.0,
+  "IsTopMost": true,
+  "RelayLabels": [
+    { "RelayChannel": 1, "Label": "Relay #1" },
+    { "RelayChannel": 2, "Label": "Relay #2" },
+    { "RelayChannel": 3, "Label": "Relay #3" },
+    { "RelayChannel": 4, "Label": "Relay #4" },
+    { "RelayChannel": 5, "Label": "Relay #5" },
+    { "RelayChannel": 6, "Label": "Relay #6" },
+    { "RelayChannel": 7, "Label": "Relay #7" },
+    { "RelayChannel": 8, "Label": "Relay #8" }
+  ]
 }

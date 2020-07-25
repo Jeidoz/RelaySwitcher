@@ -26,5 +26,16 @@ namespace Switcher.Models
                 OnPropertyChanged(nameof(Label));
             }
         }
+
+        public RelayLabel()
+        {
+
+        }
+
+        public RelayLabel(Channels channel, string label)
+        {
+            _relayChannel = channel;
+            _label = label;
+        }
     }
 }
