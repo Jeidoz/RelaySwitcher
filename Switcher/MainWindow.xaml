@@ -22,12 +22,12 @@
         Topmost="{Binding AppConfig.IsTopMost}">
     <Window.Resources>
         <Style x:Key="OffSwitch" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedAccentButton}">
-            <Setter Property="Margin" Value="5" />
-            <Setter Property="Height" Value="Auto"/>
+            <Setter Property="Margin" Value="4" />
+            <Setter Property="Height" Value="Auto" />
         </Style>
         <Style x:Key="OnSwitch" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedDarkButton}">
-            <Setter Property="Margin" Value="5" />
-            <Setter Property="Height" Value="Auto"/>
+            <Setter Property="Margin" Value="4" />
+            <Setter Property="Height" Value="Auto" />
         </Style>
         <converters:EnumToValueStringConverter x:Key="EnumToValueConverter"/>
     </Window.Resources>
@@ -77,14 +77,14 @@
         <Grid DockPanel.Dock="Top">
             <Grid.RowDefinitions>
                 <RowDefinition />
-                <RowDefinition Height="10" />
+                <RowDefinition Height="20" />
             </Grid.RowDefinitions>
             <ItemsControl x:Name="SwitchButtonContainer"
                           Grid.Row="0"
                           ItemsSource="{Binding SwitchButtons}">
                 <ItemsControl.Template>
                     <ControlTemplate TargetType="ItemsControl">
-                        <ItemsPresenter />
+                        <ItemsPresenter/>
                     </ControlTemplate>
                 </ItemsControl.Template>
                 <ItemsControl.ItemContainerStyle>
@@ -104,21 +104,35 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Button Style="{Binding Style}"
+                                Padding="0"
                                 Click="ProcessButtonClick"
-                                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                Content="{Binding RelayLabel.Label}">
-                            <Button.ContextMenu>
-                                <ContextMenu>
-                                    <MenuItem Header="Edit label"
+                                HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <Button.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="Edit label"
                                               Command="{x:Static local:MainWindow.EditRelayLabelCommand}"
                                               CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
-                                </ContextMenu>
-                            </Button.ContextMenu>
-                        </Button>
+                                    </ContextMenu>
+                                </Button.ContextMenu>
+                                <DockPanel Width="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=ActualWidth}"
+                                           Height="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=ActualHeight}">
+                                <TextBlock Text="{Binding RelayLabel.RelayChannel, Converter={StaticResource EnumToValueConverter}, Mode=OneWay}"
+                                           DockPanel.Dock="Bottom"
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Bottom"
+                                           Margin="0, 0, 5, 3"/>
+                                <TextBlock Text="{Binding RelayLabel.Label}"
+                                               TextWrapping="Wrap"
+                                               DockPanel.Dock="Top"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                </DockPanel>
+                            </Button>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
             <TextBlock Grid.Row="1"
+                       Margin="2, 5, 2, 2"
                        FontSize="7"
                        FontWeight="SemiBold"
                        HorizontalAlignment="Center">
