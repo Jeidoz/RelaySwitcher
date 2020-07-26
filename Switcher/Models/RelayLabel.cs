@@ -7,6 +7,7 @@ namespace Switcher.Models
     {
         private Channels _relayChannel;
         private string _label;
+        private bool _isEnabled;
 
         public Channels RelayChannel
         {
@@ -25,6 +26,16 @@ namespace Switcher.Models
             {
                 _label = value;
                 OnPropertyChanged(nameof(Label));
+            }
+        }
+
+        public bool IsEnabled
+        {
+            get => _isEnabled;
+            set
+            {
+                _isEnabled = value;
+                OnPropertyChanged(nameof(IsEnabled));
             }
         }
 

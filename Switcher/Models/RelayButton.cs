@@ -5,10 +5,9 @@ namespace Switcher.Models
 {
     public sealed class RelayButton : BaseViewModel
     {
-        private Style _style;
         private bool _isVisible;
+        private Style _style;
         private RelayLabel _relayLabel;
-
 
         public bool IsVisible
         {

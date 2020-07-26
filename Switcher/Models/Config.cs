@@ -7,10 +7,11 @@ using System.IO;
 
 namespace Switcher.Models
 {
-    public sealed class Config : BaseViewModel
+    public class Config : BaseViewModel
     {
         public static readonly string FileName = "config.json";
 
+        private const int MaxRelayNumber = 8;
         private const float DefaultPauseInSeconds = 2;
 
         private string _ip;
@@ -65,16 +66,42 @@ namespace Switcher.Models
                 OnPropertyChanged(nameof(IsTopMost));
             }
         }
-
         public RelayType RelayType
         {
             get => _relayType;
             set
             {
                 _relayType = value;
+                if (RelayLabels != null)
+                {
+                    UpdateRelayStatuses();
+                }
+
                 OnPropertyChanged(nameof(RelayType));
             }
         }
+
+        private void UpdateRelayStatuses()
+        {
+            int enableTo = _relayType switch
+            {
+                RelayType.FourChannels => 4,
+                RelayType.SixChannels => 6,
+                RelayType.EightChannels => 8,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+
+            for (int i = 0; i < enableTo; ++i)
+            {
+                RelayLabels[i].IsEnabled = true;
+            }
+
+            for (int i = enableTo; i < MaxRelayNumber; ++i)
+            {
+                RelayLabels[i].IsEnabled = false;
+            }
+        }
+
         public ObservableCollection<RelayLabel> RelayLabels { get; set; }
 
         public static readonly Config Default = new Config

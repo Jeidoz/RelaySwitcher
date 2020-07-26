@@ -16,8 +16,8 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         Title="Switcher"
-        Height="265" Width="320"
-        MinHeight="265" MinWidth="250"
+        Height="300" Width="320"
+        MinHeight="300" MinWidth="250"
         WindowStartupLocation="CenterScreen"
         Topmost="{Binding AppConfig.IsTopMost}">
     <Window.Resources>
@@ -90,7 +90,7 @@
                 <ItemsControl.ItemContainerStyle>
                     <Style TargetType="ContentPresenter">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsVisible}" Value="False">
+                            <DataTrigger Binding="{Binding RelayLabel.IsEnabled}" Value="False">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                             </DataTrigger>
                         </Style.Triggers>

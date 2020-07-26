@@ -6,13 +6,13 @@
   "IsTopMost": true,
   "RelayType": 0,
   "RelayLabels": [
-    { "RelayChannel": 1, "Label": "Relay #1" },
-    { "RelayChannel": 2, "Label": "Relay #2" },
-    { "RelayChannel": 3, "Label": "Relay #3" },
-    { "RelayChannel": 4, "Label": "Relay #4" },
-    { "RelayChannel": 5, "Label": "Relay #5" },
-    { "RelayChannel": 6, "Label": "Relay #6" },
-    { "RelayChannel": 7, "Label": "Relay #7" },
-    { "RelayChannel": 8, "Label": "Relay #8" }
+    { "RelayChannel": 1, "Label": "Relay #1", "IsEnabled": true },
+    { "RelayChannel": 2, "Label": "Relay #2", "IsEnabled": true },
+    { "RelayChannel": 3, "Label": "Relay #3", "IsEnabled": true },
+    { "RelayChannel": 4, "Label": "Relay #4", "IsEnabled": true },
+    { "RelayChannel": 5, "Label": "Relay #5", "IsEnabled": true },
+    { "RelayChannel": 6, "Label": "Relay #6", "IsEnabled": true },
+    { "RelayChannel": 7, "Label": "Relay #7", "IsEnabled": true },
+    { "RelayChannel": 8, "Label": "Relay #8", "IsEnabled": true }
   ]
 }
