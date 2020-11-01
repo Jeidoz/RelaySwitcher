@@ -103,7 +103,7 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Button Style="{Binding Style}"
+                        <Button Style="{Binding Style, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Padding="0"
                                 Click="ProcessButtonClick"
                                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch">

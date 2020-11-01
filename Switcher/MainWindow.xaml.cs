@@ -106,7 +106,9 @@ namespace Switcher
             var context = (RelayButton)pressedButton.DataContext;
             Channels selectedChannel = context.RelayLabel.RelayChannel;
             await _channelManager.SendRelayChannelsSetCommand(selectedChannel);
-            foreach (var button in _viewModel.SwitchButtons.Where(btn => btn.RelayLabel.RelayChannel != selectedChannel))
+            var buttonsToDeactivate = _viewModel.SwitchButtons.Where(btn =>
+                btn.RelayLabel.RelayChannel != selectedChannel && btn.Style == _activatedButtonStyle);
+            foreach (var button in buttonsToDeactivate)
             {
                 button.Style = _deactivatedButtonStyle;
             }
