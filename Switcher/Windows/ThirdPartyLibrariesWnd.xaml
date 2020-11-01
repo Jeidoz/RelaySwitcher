@@ -14,7 +14,7 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         Title="List of used third party libraries"
         Width="375" Height="180"
-        WindowStartupLocation="CenterOwner">
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <materialDesign:Card Padding="32" Margin="16"
                              HorizontalAlignment="Center"
