@@ -64,11 +64,6 @@ namespace Switcher.ViewModels
             set
             {
                 _appConfig = value;
-                if (SwitchButtons != null)
-                {
-                    UpdateEnableSwitchers();
-                }
-
                 OnPropertyChanged(nameof(AppConfig));
             }
         }
