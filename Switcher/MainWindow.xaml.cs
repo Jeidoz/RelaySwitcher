@@ -88,7 +88,7 @@ namespace Switcher
         private void SetUpActiveButtons()
         {
             var channelsStatus = _channelManager.GetRelayChannelsStatus();
-            for (int i = 0; i < 4; ++i)
+            for (int i = 0; i < channelsStatus.Count; ++i)
             {
                 _viewModel.SwitchButtons[i].Style =
                     channelsStatus[i] ? _activatedButtonStyle : _deactivatedButtonStyle;
@@ -153,7 +153,7 @@ namespace Switcher
                 return;
             }
 
-            _viewModel.AppConfig = wnd.Config;
+            _viewModel.AppConfig = new Config(wnd.Config);
             _viewModel.AppConfig.SaveToFile(_configFilePath);
             if (_viewModel.AppConfig.IsSameSocketConfig(wnd.Config))
             {
