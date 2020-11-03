@@ -11,7 +11,7 @@ namespace Switcher.Models
     {
         public static readonly string FileName = "config.json";
 
-        private const int MaxRelayNumber = 8;
+        internal const int MaxRelayNumber = 8;
         private const float DefaultPauseInSeconds = 2;
 
         private string _ip;

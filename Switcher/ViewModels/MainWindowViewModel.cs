@@ -15,6 +15,10 @@ namespace Switcher.ViewModels
 
         public MainWindowViewModel(string configPath)
         {
+            CreateOrLoadAppConfig(configPath);
+        }
+        private void CreateOrLoadAppConfig(string configPath)
+        {
             if (!File.Exists(configPath))
             {
                 AppConfig = Config.Default;
