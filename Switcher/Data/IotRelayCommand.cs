@@ -6,19 +6,17 @@ namespace Switcher.Data
     public sealed class IotRelayCommand
     {
         public const byte StatusResultByte = 4;
-        public const byte SetRelay = 0xFF;
-        public const byte ResultXorKey = 0xAA;
-        public const ushort MinPasswordValue = 0;
-        public const ushort MaxPasswordValue = 9999;
-        public const byte NoPassword = 0;
-        public const byte AllChannelsMask = 0b1111;
-        public const byte StatusCommand = 0;
-        public const byte WriteCommand = 1;
-        public const byte PCToDeviceResult = 0 ^ ResultXorKey;
+        private const byte SetRelay = 0xFF;
+        private const byte ResultXorKey = 0xAA;
+        private const ushort MinPasswordValue = 0;
+        private const ushort MaxPasswordValue = 9999;
+        private const byte NoPassword = 0;
+        private const byte AllChannelsMask = 0b1111;
+        private const byte StatusCommand = 0;
+        private const byte WriteCommand = 1;
+        private const byte PcToDeviceResult = 0 ^ ResultXorKey;
 
         private byte[] _lsbPassword;
-
-        public byte Session { get; set; }
 
         public ushort Password
         {
@@ -26,7 +24,7 @@ namespace Switcher.Data
             {
                 if (value > MaxPasswordValue)
                 {
-                    throw new ArgumentOutOfRangeException(nameof(Password), $"Out of password range ({MinPasswordValue}~{MaxPasswordValue})");
+                    throw new ArgumentOutOfRangeException(nameof(Password), $@"Out of password range ({MinPasswordValue}~{MaxPasswordValue})");
                 }
 
                 // 1234 to { 34, 12 }
@@ -47,7 +45,6 @@ namespace Switcher.Data
 
         public IotRelayCommand(int password = NoPassword)
         {
-            Session = default;
             Password = (ushort)password;
         }
 
@@ -55,20 +52,20 @@ namespace Switcher.Data
         {
             byte selectedChannel = channel switch
             {
-                Channels.None => 0b_0000_0000,
-                Channels.First => 0b_0000_0001,
-                Channels.Second => 0b_0000_0010,
-                Channels.Third => 0b_0000_0100,
-                Channels.Fourth => 0b_0000_1000,
-                Channels.Fifth => 0b_0001_0000,
-                Channels.Sixth => 0b_0010_0000,
+                Channels.None    => 0b_0000_0000,
+                Channels.First   => 0b_0000_0001,
+                Channels.Second  => 0b_0000_0010,
+                Channels.Third   => 0b_0000_0100,
+                Channels.Fourth  => 0b_0000_1000,
+                Channels.Fifth   => 0b_0001_0000,
+                Channels.Sixth   => 0b_0010_0000,
                 Channels.Seventh => 0b_0100_0000,
-                Channels.Eighth => 0b_1000_0000,
-                _ => throw new ArgumentOutOfRangeException(nameof(channel), "Out of relay channels (range is #1-#4)")
+                Channels.Eighth  => 0b_1000_0000,
+                _ => throw new ArgumentOutOfRangeException(nameof(channel), @"Out of relay channels (range is #1-#4)")
             };
             return new[]
             {
-                SetRelay, PCToDeviceResult, default, WriteCommand,
+                SetRelay, PcToDeviceResult, default, WriteCommand,
                 _lsbPassword[0], _lsbPassword[1],
                 AllChannelsMask, selectedChannel
             };
@@ -78,7 +75,7 @@ namespace Switcher.Data
         {
             return new[]
             {
-                SetRelay, PCToDeviceResult, default, StatusCommand,
+                SetRelay, PcToDeviceResult, default, StatusCommand,
                 _lsbPassword[0], _lsbPassword[1]
             };
         }

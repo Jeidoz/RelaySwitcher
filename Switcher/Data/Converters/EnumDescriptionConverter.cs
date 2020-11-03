@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
-using System.Reflection;
 using System.Windows.Data;
 
 namespace Switcher.Data.Converters
@@ -10,7 +9,7 @@ namespace Switcher.Data.Converters
     {
         private string GetEnumDescription(Enum enumObj)
         {
-            FieldInfo fieldInfo = enumObj.GetType().GetField(enumObj.ToString());
+            var fieldInfo = enumObj.GetType().GetField(enumObj.ToString());
 
             object[] attributes = fieldInfo.GetCustomAttributes(false);
 
@@ -19,13 +18,13 @@ namespace Switcher.Data.Converters
                 return enumObj.ToString();
             }
 
-            DescriptionAttribute attribute = attributes[0] as DescriptionAttribute;
+            var attribute = attributes[0] as DescriptionAttribute;
             return attribute?.Description;
         }
 
         object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            Enum myEnum = (Enum)value;
+            var myEnum = (Enum)value;
             return GetEnumDescription(myEnum);
         }
 

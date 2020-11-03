@@ -12,10 +12,11 @@ namespace Switcher
 {
     public sealed class ChannelManager
     {
-        public static int DefaultTcpPort = 60001;
+        public const int DefaultTcpPort = 60001;
 
-        private readonly UdpClient _client;
         private Config _config;
+        private readonly int FiveSecondsInMiliseconds = (int) TimeSpan.FromSeconds(5).TotalMilliseconds;
+        private readonly UdpClient _client;
         private readonly IotRelayCommand _command;
 
         // Creates an IPEndPoint to record the IP Address and port number of the sender.
@@ -31,8 +32,8 @@ namespace Switcher
                 {
                     Client =
                     {
-                        ReceiveTimeout = 5000,
-                        SendTimeout = 5000
+                        ReceiveTimeout = FiveSecondsInMiliseconds,
+                        SendTimeout = FiveSecondsInMiliseconds
                     }
                 };
             }

@@ -5,6 +5,8 @@ namespace Switcher.Windows
 {
     public partial class EditConfigWnd : Window
     {
+        // ReSharper disable once MemberCanBePrivate.Global
+        // Required for XAML Binding
         public Config Config { get; set; }
 
         public EditConfigWnd(Config currentConfig)

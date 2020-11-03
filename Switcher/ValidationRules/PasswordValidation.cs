@@ -45,15 +45,5 @@ namespace Switcher.ValidationRules
         {
             return password >= MinPasswordValue && password <= MaxPasswordValue;
         }
-
-        public static bool IsValidPassword(string passwordString)
-        {
-            if (passwordString.Length > MaxPasswordStringLength)
-            {
-                return false;
-            }
-
-            return int.TryParse(passwordString, out int password) && IsValidPassword(password);
-        }
     }
 }

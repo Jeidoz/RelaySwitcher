@@ -160,8 +160,8 @@ namespace Switcher.Models
 
         public override bool Equals(object obj)
         {
-            const float MinDiff = 1e-9f;
-            if ((obj is null) || GetType() != obj.GetType())
+            const float minDiff = 1e-9f;
+            if (obj is null || GetType() != obj.GetType())
             {
                 return false;
             }
@@ -170,7 +170,7 @@ namespace Switcher.Models
 
             return IsSameSocketConfig(config) &&
                    _password == config._password &&
-                   Math.Abs(_pauseBetweenRequests - config._pauseBetweenRequests) < MinDiff &&
+                   Math.Abs(_pauseBetweenRequests - config._pauseBetweenRequests) < minDiff &&
                    _isTopMost == config._isTopMost &&
                    _relayType == config._relayType;
         }
